@@ -1,0 +1,1097 @@
+ :root {
+    --violet:    #7C3AED;
+    --violet-lt: #A78BFA;
+    --amber:     #F59E0B;
+    --amber-lt:  #FCD34D;
+    --surface:   #0F0D1A;
+    --surface2:  #171328;
+    --surface3:  #1E1A36;
+    --text:      #F0EBF8;
+    --muted:     #7C6FA0;
+    --border:    rgba(124,58,237,.18);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--surface);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* ── Custom cursor ── */
+  .cursor {
+    position: fixed; top: 0; left: 0; z-index: 9999;
+    pointer-events: none; mix-blend-mode: exclusion;
+  }
+  .cursor-dot {
+    width: 8px; height: 8px; background: var(--amber);
+    border-radius: 50%; position: absolute;
+    transform: translate(-50%,-50%);
+    transition: transform .1s;
+  }
+  .cursor-ring {
+    width: 36px; height: 36px; border: 1px solid rgba(245,158,11,.5);
+    border-radius: 50%; position: absolute;
+    transform: translate(-50%,-50%);
+    transition: all .2s ease;
+  }
+
+  /* ── Noise overlay ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: .4; pointer-events: none;
+  }
+
+  /* ── Nav ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.5rem 4rem;
+    display: flex; align-items: center; justify-content: space-between;
+    background: linear-gradient(to bottom, rgba(15,13,26,.9), transparent);
+    backdrop-filter: blur(4px);
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1.4rem;
+    letter-spacing: -.02em; color: var(--text);
+    text-decoration: none;
+    display: flex; align-items: center; gap: .5rem;
+  }
+  .nav-logo span { color: var(--amber); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: .85rem; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--muted); text-decoration: none;
+    transition: color .25s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    background: var(--violet); color: #fff;
+    padding: .55rem 1.4rem; border-radius: 100px;
+    font-size: .85rem; font-weight: 500;
+    text-decoration: none; letter-spacing: .02em;
+    transition: all .25s;
+    box-shadow: 0 0 20px rgba(124,58,237,.3);
+  }
+  .nav-cta:hover {
+    background: var(--amber); color: #000;
+    box-shadow: 0 0 30px rgba(245,158,11,.4);
+    transform: translateY(-1px);
+  }
+
+  /* ── Hero ── */
+  #hero {
+    min-height: 100vh;
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center; gap: 0;
+    padding: 0 4rem;
+    position: relative; overflow: hidden;
+  }
+
+  /* Radial glow */
+  #hero::after {
+    content: '';
+    position: absolute; top: -20%; right: -10%;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(124,58,237,.22) 0%, transparent 70%);
+    pointer-events: none;
+    animation: pulse 8s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.08); opacity: .7; }
+  }
+
+  .hero-text { position: relative; z-index: 1; }
+
+  .hero-eyebrow {
+    font-family: 'Syne', sans-serif;
+    font-size: .75rem; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--amber);
+    display: flex; align-items: center; gap: .6rem;
+    margin-bottom: 1.5rem;
+    opacity: 0; animation: fadeUp .8s .2s forwards;
+  }
+  .hero-eyebrow::before {
+    content: ''; width: 28px; height: 1px; background: var(--amber);
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 6vw, 7rem);
+    font-weight: 300;
+    line-height: 1.02;
+    letter-spacing: -.02em;
+    margin-bottom: 1.5rem;
+    opacity: 0; animation: fadeUp .8s .4s forwards;
+  }
+  h1 em {
+    font-style: italic; color: var(--violet-lt);
+  }
+
+  .hero-sub {
+    font-size: 1.05rem; color: var(--muted); line-height: 1.7;
+    max-width: 420px; margin-bottom: 2.5rem;
+    opacity: 0; animation: fadeUp .8s .6s forwards;
+  }
+
+  .hero-actions {
+    display: flex; gap: 1rem; align-items: center;
+    opacity: 0; animation: fadeUp .8s .8s forwards;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--violet), #5B21B6);
+    color: #fff; padding: .8rem 2rem; border-radius: 100px;
+    font-family: 'Syne', sans-serif; font-weight: 600;
+    font-size: .9rem; letter-spacing: .04em;
+    text-decoration: none;
+    box-shadow: 0 8px 32px rgba(124,58,237,.35);
+    transition: all .3s;
+    display: flex; align-items: center; gap: .5rem;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(124,58,237,.5);
+  }
+  .btn-ghost {
+    color: var(--muted); font-size: .9rem; text-decoration: none;
+    display: flex; align-items: center; gap: .4rem;
+    transition: color .2s;
+  }
+  .btn-ghost:hover { color: var(--text); }
+  .btn-ghost svg { transition: transform .2s; }
+  .btn-ghost:hover svg { transform: translateX(3px); }
+
+  /* ── Phone stack ── */
+  .hero-visual {
+    position: relative; height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; animation: fadeIn 1s .5s forwards;
+  }
+  .phone-wrap {
+    position: relative; width: 260px; height: 540px;
+  }
+  .phone {
+    position: absolute;
+    width: 240px; height: 500px;
+    border-radius: 36px;
+    overflow: hidden;
+    border: 2px solid rgba(255,255,255,.08);
+    box-shadow: 0 40px 80px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.1);
+  }
+  .phone-main {
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    animation: floatMain 6s ease-in-out infinite;
+  }
+  .phone-left {
+    left: -70px; top: 50%;
+    transform: translateY(-50%) rotate(-8deg);
+    z-index: 2; opacity: .6;
+    animation: floatLeft 6s 1s ease-in-out infinite;
+  }
+  .phone-right {
+    right: -70px; top: 50%;
+    transform: translateY(-50%) rotate(8deg);
+    z-index: 2; opacity: .6;
+    animation: floatRight 6s 2s ease-in-out infinite;
+  }
+  @keyframes floatMain {
+    0%,100% { transform: translate(-50%,-50%) translateY(0); }
+    50% { transform: translate(-50%,-50%) translateY(-14px); }
+  }
+  @keyframes floatLeft {
+    0%,100% { transform: translateY(-50%) rotate(-8deg) translateY(0); }
+    50% { transform: translateY(-50%) rotate(-8deg) translateY(-10px); }
+  }
+  @keyframes floatRight {
+    0%,100% { transform: translateY(-50%) rotate(8deg) translateY(0); }
+    50% { transform: translateY(-50%) rotate(8deg) translateY(-12px); }
+  }
+
+  /* Wallpaper gradient placeholders */
+  .wp-1 { background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); }
+  .wp-2 { background: linear-gradient(135deg, #1a0533, #7C3AED, #f59e0b); }
+  .wp-3 { background: linear-gradient(135deg, #0d1117, #1a2744, #0f3460); }
+  .wp-4 { background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); }
+  .wp-5 { background: linear-gradient(135deg, #200122, #6f0000, #200122); }
+
+  .phone-screen {
+    width: 100%; height: 100%;
+    position: relative; overflow: hidden;
+  }
+  .phone-ui {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+  }
+  .phone-statusbar {
+    height: 44px; padding: 0 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 11px; font-weight: 600; color: rgba(255,255,255,.9);
+  }
+  .phone-notch {
+    width: 80px; height: 24px;
+    background: #000; border-radius: 0 0 16px 16px;
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  }
+  .phone-grid {
+    flex: 1; padding: 8px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+  }
+  .phone-thumb {
+    border-radius: 10px; overflow: hidden;
+  }
+  .phone-thumb:first-child { grid-column: span 2; height: 120px; }
+  .phone-thumb { height: 80px; }
+  .t1 { background: linear-gradient(135deg, #7C3AED, #4C1D95); }
+  .t2 { background: linear-gradient(135deg, #f59e0b, #92400e); }
+  .t3 { background: linear-gradient(135deg, #0891b2, #164e63); }
+  .t4 { background: linear-gradient(135deg, #059669, #064e3b); }
+  .t5 { background: linear-gradient(135deg, #db2777, #831843); }
+
+  .phone-bottombar {
+    height: 60px; background: rgba(0,0,0,.4);
+    backdrop-filter: blur(10px);
+    display: flex; align-items: center; justify-content: space-around;
+    padding: 0 20px;
+  }
+  .tab-icon {
+    width: 20px; height: 20px;
+    border-radius: 4px; opacity: .5;
+  }
+  .tab-icon.active { opacity: 1; background: var(--amber) !important; }
+  .t-home { background: #fff; }
+  .t-search { background: #fff; border-radius: 50%; }
+  .t-fav { background: var(--violet-lt); }
+  .t-gen { background: var(--amber); }
+
+  /* ── Stats bar ── */
+  .stats-bar {
+    display: flex; gap: 0;
+    margin-top: 3rem;
+    opacity: 0; animation: fadeUp .8s 1s forwards;
+  }
+  .stat {
+    padding: 0 2rem 0 0;
+    border-right: 1px solid var(--border);
+  }
+  .stat:last-child { border-right: none; padding-left: 2rem; }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.4rem; font-weight: 600;
+    color: var(--text); line-height: 1;
+  }
+  .stat-num span { color: var(--amber); }
+  .stat-label {
+    font-size: .75rem; color: var(--muted);
+    letter-spacing: .06em; text-transform: uppercase; margin-top: .2rem;
+  }
+
+  /* ── Section base ── */
+  section { position: relative; z-index: 1; }
+
+  .section-eyebrow {
+    font-family: 'Syne', sans-serif;
+    font-size: .72rem; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--amber); margin-bottom: 1rem;
+    display: flex; align-items: center; gap: .6rem;
+  }
+  .section-eyebrow::before {
+    content: ''; width: 20px; height: 1px; background: var(--amber);
+  }
+  h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.4rem, 4vw, 4.5rem);
+    font-weight: 300; line-height: 1.08;
+    letter-spacing: -.02em;
+  }
+  h2 em { font-style: italic; color: var(--violet-lt); }
+
+  /* ── Features ── */
+  #features {
+    padding: 8rem 4rem;
+    background: linear-gradient(to bottom, transparent, var(--surface2), transparent);
+  }
+  .features-header {
+    max-width: 600px; margin-bottom: 5rem;
+  }
+  .features-header h2 { margin-bottom: 1rem; }
+  .features-header p { color: var(--muted); line-height: 1.7; }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+  .feat-card {
+    background: var(--surface2);
+    padding: 2.5rem 2rem;
+    transition: background .3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .feat-card:hover { background: var(--surface3); }
+  .feat-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--violet), transparent);
+    opacity: 0; transition: opacity .3s;
+  }
+  .feat-card:hover::before { opacity: 1; }
+
+  .feat-icon {
+    width: 44px; height: 44px; margin-bottom: 1.4rem;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+  }
+  .fi-violet { background: rgba(124,58,237,.15); }
+  .fi-amber  { background: rgba(245,158,11,.15); }
+  .fi-teal   { background: rgba(20,184,166,.15); }
+  .fi-rose   { background: rgba(244,63,94,.15); }
+  .fi-indigo { background: rgba(99,102,241,.15); }
+  .fi-green  { background: rgba(16,185,129,.15); }
+  .fi-purple { background: rgba(168,85,247,.15); }
+  .fi-sky    { background: rgba(14,165,233,.15); }
+
+  .feat-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem; font-weight: 600;
+    margin-bottom: .5rem;
+  }
+  .feat-desc { font-size: .88rem; color: var(--muted); line-height: 1.65; }
+
+  /* ── AI Section ── */
+  #ai {
+    padding: 8rem 4rem;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 6rem; align-items: center;
+  }
+  .ai-visual {
+    position: relative;
+    background: var(--surface2);
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    aspect-ratio: 4/3;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ai-visual::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 30%, rgba(124,58,237,.2), transparent 60%),
+                radial-gradient(ellipse at 70% 70%, rgba(245,158,11,.15), transparent 60%);
+  }
+  .ai-prompt-demo {
+    position: relative; z-index: 1; padding: 2rem; width: 100%;
+  }
+  .ai-label {
+    font-size: .7rem; letter-spacing: .15em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: .8rem;
+  }
+  .ai-input-mock {
+    background: rgba(255,255,255,.05);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 1rem 1.2rem;
+    font-size: .9rem; color: var(--muted);
+    margin-bottom: 1rem;
+    position: relative; overflow: hidden;
+  }
+  .ai-input-mock::after {
+    content: '|';
+    color: var(--amber);
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  .ai-typing {
+    color: var(--text); font-size: .9rem;
+  }
+  .ai-generate-btn {
+    background: linear-gradient(135deg, var(--violet), #5B21B6);
+    color: #fff; border: none; border-radius: 10px;
+    padding: .7rem 1.4rem; font-family: 'Syne', sans-serif;
+    font-size: .85rem; font-weight: 600; cursor: pointer;
+    display: flex; align-items: center; gap: .5rem;
+    width: 100%;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(124,58,237,.3);
+  }
+  .ai-results {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem;
+    margin-top: 1rem;
+  }
+  .ai-result-thumb {
+    border-radius: 8px; aspect-ratio: 1;
+    position: relative; overflow: hidden;
+  }
+  .ai-result-thumb::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: inherit;
+    filter: blur(0px);
+    transition: filter .3s;
+  }
+  .art1 { background: linear-gradient(135deg, #1a0533, #7C3AED, #4C1D95); }
+  .art2 { background: linear-gradient(135deg, #0f2027, #f59e0b, #7c3aed); }
+  .art3 { background: linear-gradient(135deg, #0d1117, #2563eb, #0891b2); }
+
+  .ai-text h2 { margin-bottom: 1.2rem; }
+  .ai-text p { color: var(--muted); line-height: 1.75; margin-bottom: 1.5rem; }
+  .ai-pill {
+    display: inline-flex; align-items: center; gap: .4rem;
+    background: rgba(124,58,237,.12); border: 1px solid rgba(124,58,237,.25);
+    border-radius: 100px; padding: .3rem .8rem;
+    font-size: .75rem; color: var(--violet-lt);
+    margin: .2rem;
+  }
+
+  /* ── Sources ── */
+  #sources {
+    padding: 6rem 4rem;
+    text-align: center;
+    background: var(--surface2);
+  }
+  #sources h2 { margin-bottom: .8rem; }
+  #sources .sub { color: var(--muted); margin-bottom: 3rem; }
+  .sources-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--border); border: 1px solid var(--border);
+    border-radius: 16px; overflow: hidden; max-width: 800px; margin: 0 auto;
+  }
+  .source-card {
+    background: var(--surface2); padding: 2.5rem 1.5rem;
+    display: flex; flex-direction: column; align-items: center; gap: .7rem;
+    transition: background .25s;
+  }
+  .source-card:hover { background: var(--surface3); }
+  .source-icon {
+    width: 48px; height: 48px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+  }
+  .source-name {
+    font-family: 'Syne', sans-serif; font-weight: 600; font-size: .9rem;
+  }
+  .source-count { font-size: .78rem; color: var(--muted); }
+
+  /* ── Quality ── */
+  #quality {
+    padding: 8rem 4rem;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8rem; align-items: center;
+  }
+  .quality-text h2 { margin-bottom: 1.2rem; }
+  .quality-text p { color: var(--muted); line-height: 1.75; margin-bottom: 2rem; }
+  .quality-options {
+    display: flex; flex-direction: column; gap: .8rem;
+  }
+  .qual-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: .9rem 1.2rem;
+    background: var(--surface2); border-radius: 10px;
+    border: 1px solid var(--border);
+    transition: border-color .25s;
+    cursor: default;
+  }
+  .qual-row:hover { border-color: var(--violet); }
+  .qual-name { font-family: 'Syne', sans-serif; font-size: .9rem; font-weight: 600; }
+  .qual-res { font-size: .8rem; color: var(--muted); }
+  .qual-badge {
+    font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
+    padding: .2rem .6rem; border-radius: 100px;
+  }
+  .badge-pro { background: rgba(245,158,11,.15); color: var(--amber); }
+  .badge-free { background: rgba(16,185,129,.1); color: #34d399; }
+
+  .quality-visual {
+    position: relative; display: flex; align-items: center; justify-content: center;
+  }
+  .res-orb {
+    width: 300px; height: 300px; border-radius: 50%;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    animation: spin-slow 20s linear infinite;
+  }
+  @keyframes spin-slow { to { transform: rotate(360deg); } }
+  .res-orb::before {
+    content: '';
+    position: absolute; inset: 20px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(124,58,237,.3), transparent 70%);
+    animation: spin-slow 10s linear infinite reverse;
+  }
+  .res-center {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem; font-weight: 600;
+    text-align: center; line-height: 1;
+    color: var(--text); position: relative; z-index: 1;
+    animation: spin-slow 20s linear infinite reverse;
+  }
+  .res-center small { display: block; font-size: 1rem; color: var(--violet-lt); }
+  .res-dot {
+    position: absolute; width: 10px; height: 10px;
+    border-radius: 50%; background: var(--amber);
+    top: -5px; left: 50%; transform: translateX(-50%);
+    box-shadow: 0 0 12px var(--amber);
+  }
+
+  /* ── Themes ── */
+  #themes {
+    padding: 6rem 4rem;
+    background: var(--surface2);
+    text-align: center;
+  }
+  #themes h2 { margin-bottom: .8rem; }
+  #themes .sub { color: var(--muted); margin-bottom: 3rem; }
+  .themes-row {
+    display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap;
+  }
+  .theme-card {
+    width: 160px; border-radius: 20px; overflow: hidden;
+    border: 1.5px solid var(--border);
+    transition: transform .3s, border-color .3s;
+    cursor: pointer;
+  }
+  .theme-card:hover { transform: translateY(-6px); border-color: var(--violet); }
+  .theme-preview {
+    height: 100px; display: flex; align-items: center; justify-content: center;
+  }
+  .theme-light { background: linear-gradient(135deg, #f8fafc, #e2d9f3); }
+  .theme-dark  { background: linear-gradient(135deg, #0F0D1A, #1E1A36); }
+  .theme-amoled{ background: #000; }
+  .theme-auto  { background: linear-gradient(135deg, #0F0D1A 50%, #f8fafc 50%); }
+  .theme-preview-icon { font-size: 2rem; }
+  .theme-label {
+    padding: .6rem;
+    background: var(--surface3);
+    font-family: 'Syne', sans-serif; font-size: .8rem; font-weight: 600;
+  }
+
+  /* ── Auto wallpaper ── */
+  #auto {
+    padding: 8rem 4rem;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
+  }
+  .auto-visual {
+    background: var(--surface2);
+    border-radius: 24px; border: 1px solid var(--border);
+    padding: 2rem;
+    position: relative; overflow: hidden;
+  }
+  .auto-visual::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 80% 20%, rgba(245,158,11,.12), transparent);
+  }
+  .auto-timer {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem; font-weight: 600;
+    color: var(--amber); text-align: center; margin: 1.5rem 0;
+    position: relative;
+  }
+  .auto-timer-label { font-size: .8rem; color: var(--muted); text-align: center; letter-spacing: .1em; text-transform: uppercase; }
+  .auto-track {
+    height: 4px; background: var(--surface3);
+    border-radius: 2px; margin: 1rem 0;
+    position: relative; overflow: hidden;
+  }
+  .auto-track-fill {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    background: linear-gradient(90deg, var(--violet), var(--amber));
+    border-radius: 2px;
+    animation: track-fill 4s ease-in-out infinite alternate;
+  }
+  @keyframes track-fill {
+    from { width: 20%; }
+    to   { width: 85%; }
+  }
+  .auto-options {
+    display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.5rem;
+  }
+  .auto-pill {
+    padding: .35rem .8rem;
+    border-radius: 100px; font-size: .78rem;
+    border: 1px solid var(--border); color: var(--muted);
+    transition: all .2s; cursor: pointer;
+  }
+  .auto-pill:hover, .auto-pill.active {
+    background: var(--violet); border-color: var(--violet); color: #fff;
+  }
+
+  /* ── Download CTA ── */
+  #download {
+    padding: 8rem 4rem;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  #download::before {
+    content: '';
+    position: absolute; top: 50%; left: 50%;
+    width: 600px; height: 600px;
+    transform: translate(-50%,-50%);
+    background: radial-gradient(circle, rgba(124,58,237,.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .dl-text {
+    position: relative; z-index: 1;
+  }
+  .dl-text h2 { margin-bottom: 1rem; }
+  .dl-text p { color: var(--muted); margin-bottom: 2.5rem; max-width: 460px; margin-left: auto; margin-right: auto; }
+  .dl-badge {
+    display: inline-flex; align-items: center; gap: .8rem;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 14px; padding: .9rem 1.6rem;
+    font-family: 'Syne', sans-serif; font-weight: 600;
+    text-decoration: none; color: var(--text);
+    transition: all .3s;
+    font-size: 1rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,.3);
+  }
+  .dl-badge:hover {
+    background: var(--violet); border-color: var(--violet);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(124,58,237,.4);
+  }
+  .dl-badge-icon { font-size: 1.4rem; }
+  .dl-sub {
+    display: block; font-size: .75rem; color: var(--muted);
+    font-family: 'DM Sans', sans-serif; font-weight: 300;
+  }
+  .dl-meta {
+    margin-top: 1.5rem; font-size: .8rem; color: var(--muted);
+    display: flex; align-items: center; justify-content: center; gap: 1.5rem;
+  }
+  .dl-meta span::before { content: '· '; }
+  .dl-meta span:first-child::before { content: ''; }
+
+  /* ── Footer ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 3rem 4rem;
+    display: flex; align-items: center; justify-content: space-between;
+    position: relative; z-index: 1;
+  }
+  .foot-logo {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: 1.1rem; color: var(--text);
+  }
+  .foot-logo span { color: var(--amber); }
+  .foot-links { display: flex; gap: 2rem; }
+  .foot-links a {
+    font-size: .8rem; color: var(--muted); text-decoration: none;
+    transition: color .2s;
+  }
+  .foot-links a:hover { color: var(--text); }
+  .foot-copy { font-size: .78rem; color: var(--muted); }
+
+  /* ── Animations ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; } to { opacity: 1; }
+  }
+
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity .8s ease, transform .8s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--surface); }
+  ::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--violet); }
+
+  /* ── Responsive ── */
+  @media (max-width: 1024px) {
+    #hero { grid-template-columns: 1fr; padding: 8rem 2rem 4rem; min-height: auto; }
+    .hero-visual { height: 60vw; }
+    #features { padding: 5rem 2rem; }
+    .features-grid { grid-template-columns: repeat(2, 1fr); }
+    #ai, #quality, #auto { grid-template-columns: 1fr; gap: 3rem; padding: 5rem 2rem; }
+    .sources-grid { grid-template-columns: repeat(2, 1fr); }
+    nav { padding: 1.2rem 2rem; }
+    #download { padding: 5rem 2rem; }
+    footer { flex-direction: column; gap: 1.5rem; text-align: center; padding: 2rem; }
+    #sources, #themes { padding: 4rem 2rem; }
+  }
+
+  @media (max-width: 640px) {
+    .features-grid { grid-template-columns: 1fr; }
+    .sources-grid { grid-template-columns: 1fr 1fr; }
+    h1 { font-size: 3rem; }
+    .nav-links { display: none; }
+    .phone-left, .phone-right { display: none; }
+    .stat:first-child { padding-left: 0; }
+  }
+
+<!-- Custom cursor -->
+<div class="cursor">
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+</div>
+
+<!-- Nav -->
+<nav>
+  <a href="#" class="nav
+  -logo">Clear<span>Walls</span></a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#ai">AI Generate</a></li>
+    <li><a href="#quality">Quality</a></li>
+    <li><a href="#download">Download</a></li>
+  </ul>
+  <a href="#download" class="nav-cta">Get the App</a>
+</nav>
+
+<!-- Hero -->
+<section id="hero">
+  <div class="hero-text">
+    <p class="hero-eyebrow">AI-Powered Wallpapers</p>
+    <h1>Walls that <em>breathe</em><br/>with you.</h1>
+    <p class="hero-sub">Millions of curated wallpapers from Pixabay & Wallhaven. Or generate something entirely yours with Stability AI. In 4K.</p>
+    <div class="hero-actions">
+      <a href="#download" class="btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 16l-4-4h3V4h2v8h3l-4 4z"/><path d="M4 20h16"/></svg>
+        Download APK
+      </a>
+      <a href="#features" class="btn-ghost">
+        Explore features
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+    <div class="stats-bar">
+      <div class="stat">
+        <div class="stat-num">5.1<span>MB</span></div>
+        <div class="stat-label">App Size</div>
+      </div>
+      <div class="stat" style="padding-left:2rem">
+        <div class="stat-num">4<span>K</span></div>
+        <div class="stat-label">Max Quality</div>
+      </div>
+      <div class="stat" style="padding-left:2rem">
+        <div class="stat-num">2<span>+</span></div>
+        <div class="stat-label">Live Sources</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="phone-wrap">
+      <!-- Left phone -->
+      <div class="phone phone-left">
+        <div class="phone-screen wp-3">
+          <div class="phone-ui">
+            <div class="phone-notch"></div>
+            <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+            <div class="phone-grid">
+              <div class="phone-thumb t1"></div>
+              <div class="phone-thumb t3"></div>
+              <div class="phone-thumb t4"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Main phone -->
+      <div class="phone phone-main">
+        <div class="phone-screen wp-2">
+          <div class="phone-ui">
+            <div class="phone-notch"></div>
+            <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+            <div class="phone-grid">
+              <div class="phone-thumb t2" style="height:130px"></div>
+              <div class="phone-thumb t1"></div>
+              <div class="phone-thumb t5"></div>
+              <div class="phone-thumb t3"></div>
+              <div class="phone-thumb t4"></div>
+            </div>
+            <div class="phone-bottombar">
+              <div class="tab-icon t-home active" style="width:20px;height:20px;border-radius:4px;background:#fff"></div>
+              <div class="tab-icon t-search" style="width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.4)"></div>
+              <div class="tab-icon" style="width:20px;height:20px;border-radius:4px;background:rgba(167,139,250,.5)"></div>
+              <div class="tab-icon" style="width:20px;height:20px;border-radius:4px;background:rgba(245,158,11,.5)"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Right phone -->
+      <div class="phone phone-right">
+        <div class="phone-screen wp-5">
+          <div class="phone-ui">
+            <div class="phone-notch"></div>
+            <div class="phone-statusbar"><span>9:41</span><span>●●●</span></div>
+            <div class="phone-grid">
+              <div class="phone-thumb t5"></div>
+              <div class="phone-thumb t2"></div>
+              <div class="phone-thumb t1"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features -->
+<section id="features">
+  <div class="features-header reveal">
+    <p class="section-eyebrow">What's inside</p>
+    <h2>Everything your<br/><em>walls</em> deserve.</h2>
+    <p>Built on Jetpack Compose with MVVM Clean Architecture. Fast, minimal, and beautiful — at 5.1 MB.</p>
+  </div>
+  <div class="features-grid reveal">
+    <div class="feat-card">
+      <div class="feat-icon fi-violet">🎨</div>
+      <div class="feat-title">Multi-Source Library</div>
+      <div class="feat-desc">Browse millions of wallpapers from Pixabay and Wallhaven in a single, unified grid.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon fi-amber">🤖</div>
+      <div class="feat-title">AI Generation</div>
+      <div class="feat-desc">Type a prompt. Get a unique wallpaper in seconds, powered by Stability AI's SDXL 1.0.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon fi-teal">📱</div>
+      <div class="feat-title">480p → 4K Quality</div>
+      <div class="feat-desc">Download in four resolutions. Save data on mobile, go full 4K on your tablet.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon fi-rose">❤️</div>
+      <div class="feat-title">Offline Favorites</div>
+      <div class="feat-desc">Save wallpapers to your personal collection. Access them even without an internet connection.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon fi-indigo">🔍</div>
+      <div class="feat-title">Smart Search</div>
+      <div class="feat-desc">Debounced keyword search with live results. Find exactly what you're looking for, instantly.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon fi-green">⚡</div>
+      <div class="feat-title">Auto Wallpaper</div>
+      <div class="feat-desc">Set a schedule and let ClearWalls rotate your wallpapers automatically via WorkManager.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon fi-purple">🎭</div>
+      <div class="feat-title">4 Theme Modes</div>
+      <div class="feat-desc">Light, Dark, AMOLED pure-black, and System — your phone, your rules.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon fi-sky">📂</div>
+      <div class="feat-title">Category Browse</div>
+      <div class="feat-desc">Curated collections across Nature, Abstract, Space, Architecture, and more.</div>
+    </div>
+  </div>
+</section>
+
+<!-- AI Section -->
+<section id="ai">
+  <div class="ai-visual reveal">
+    <div class="ai-prompt-demo">
+      <div class="ai-label">AI Wallpaper Generator</div>
+      <div class="ai-input-mock">
+        <span class="ai-typing">misty purple mountains at golden hour, ultra detailed</span>
+      </div>
+      <button class="ai-generate-btn">
+        ✨ Generate Wallpaper
+      </button>
+      <div class="ai-results">
+        <div class="ai-result-thumb art1"></div>
+        <div class="ai-result-thumb art2"></div>
+        <div class="ai-result-thumb art3"></div>
+      </div>
+    </div>
+  </div>
+  <div class="ai-text reveal">
+    <p class="section-eyebrow">Powered by SDXL 1.0</p>
+    <h2>Your imagination,<br/><em>rendered</em>.</h2>
+    <p>No two wallpapers alike. Describe any scene, mood, or aesthetic and ClearWalls generates a unique, high-resolution wallpaper that's truly yours.</p>
+    <p>Earn generation credits by watching a short rewarded ad, or top up anytime.</p>
+    <div>
+      <span class="ai-pill">🖼️ SDXL 1.0</span>
+      <span class="ai-pill">🎨 Custom prompts</span>
+      <span class="ai-pill">📐 Phone-optimized</span>
+      <span class="ai-pill">💾 Instant download</span>
+    </div>
+  </div>
+</section>
+
+<!-- Sources -->
+<section id="sources">
+  <div class="reveal">
+    <p class="section-eyebrow" style="justify-content:center">Wallpaper Sources</p>
+    <h2>Millions of walls.<br/><em>Zero</em> compromises.</h2>
+    <p class="sub">Curated from the best free wallpaper platforms on the web.</p>
+    <div class="sources-grid">
+      <div class="source-card">
+        <div class="source-icon" style="background:rgba(245,158,11,.12);font-size:1.6rem">🖼</div>
+        <div class="source-name">Pixabay</div>
+        <div class="source-count">4M+ images</div>
+      </div>
+      <div class="source-card">
+        <div class="source-icon" style="background:rgba(124,58,237,.12);font-size:1.6rem">🌐</div>
+        <div class="source-name">Wallhaven</div>
+        <div class="source-count">1M+ wallpapers</div>
+      </div>
+      <div class="source-card">
+        <div class="source-icon" style="background:rgba(20,184,166,.12);font-size:1.6rem">🔥</div>
+        <div class="source-name">Firebase</div>
+        <div class="source-count">Curated picks</div>
+      </div>
+      <div class="source-card">
+        <div class="source-icon" style="background:rgba(99,102,241,.12);font-size:1.6rem">✨</div>
+        <div class="source-name">Stability AI</div>
+        <div class="source-count">Infinite generations</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Quality -->
+<section id="quality">
+  <div class="quality-text reveal">
+    <p class="section-eyebrow">Download Quality</p>
+    <h2>Every pixel,<br/><em>perfected</em>.</h2>
+    <p>Choose the resolution that suits your screen — and your data plan. No quality locked behind a paywall.</p>
+    <div class="quality-options">
+      <div class="qual-row">
+        <div>
+          <div class="qual-name">Standard HD</div>
+          <div class="qual-res">480 × 854 px</div>
+        </div>
+        <span class="qual-badge badge-free">Free</span>
+      </div>
+      <div class="qual-row">
+        <div>
+          <div class="qual-name">Full HD</div>
+          <div class="qual-res">1080 × 1920 px</div>
+        </div>
+        <span class="qual-badge badge-free">Free</span>
+      </div>
+      <div class="qual-row">
+        <div>
+          <div class="qual-name">2K</div>
+          <div class="qual-res">1440 × 2560 px</div>
+        </div>
+        <span class="qual-badge badge-pro">High Res</span>
+      </div>
+      <div class="qual-row">
+        <div>
+          <div class="qual-name">4K Ultra HD</div>
+          <div class="qual-res">2160 × 3840 px</div>
+        </div>
+        <span class="qual-badge badge-pro">Max Quality</span>
+      </div>
+    </div>
+  </div>
+  <div class="quality-visual reveal">
+    <div class="res-orb">
+      <div class="res-dot"></div>
+      <div class="res-center">
+        4K<br/>
+        <small>Ultra HD</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Themes -->
+<section id="themes">
+  <div class="reveal">
+    <p class="section-eyebrow" style="justify-content:center">Theme Engine</p>
+    <h2>Your phone, your <em>palette</em>.</h2>
+    <p class="sub">Four distinct modes. One tap to switch.</p>
+    <div class="themes-row">
+      <div class="theme-card">
+        <div class="theme-preview theme-light"><div class="theme-preview-icon">☀️</div></div>
+        <div class="theme-label">Light</div>
+      </div>
+      <div class="theme-card">
+        <div class="theme-preview theme-dark"><div class="theme-preview-icon">🌙</div></div>
+        <div class="theme-label">Dark</div>
+      </div>
+      <div class="theme-card">
+        <div class="theme-preview theme-amoled"><div class="theme-preview-icon">⚫</div></div>
+        <div class="theme-label">AMOLED</div>
+      </div>
+      <div class="theme-card">
+        <div class="theme-preview theme-auto"><div class="theme-preview-icon">🔄</div></div>
+        <div class="theme-label">System</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Auto Wallpaper -->
+<section id="auto">
+  <div class="auto-text reveal">
+    <p class="section-eyebrow">Smart Automation</p>
+    <h2>Set it, forget it,<br/><em>love it</em>.</h2>
+    <p style="color:var(--muted);line-height:1.75;margin-bottom:1.5rem">The Auto Wallpaper Changer cycles through your favorites (or any category) on a schedule you define. Powered by WorkManager — battery-friendly, always reliable.</p>
+    <p style="color:var(--muted);line-height:1.75">Apply to home screen, lock screen, or both. Wake up to something new every day.</p>
+  </div>
+  <div class="auto-visual reveal">
+    <div class="auto-timer-label">Next change in</div>
+    <div class="auto-timer">02:47:13</div>
+    <div class="auto-track"><div class="auto-track-fill"></div></div>
+    <div class="auto-timer-label">Rotate interval</div>
+    <div class="auto-options">
+      <div class="auto-pill">15 min</div>
+      <div class="auto-pill">30 min</div>
+      <div class="auto-pill active">1 hour</div>
+      <div class="auto-pill">6 hours</div>
+      <div class="auto-pill">Daily</div>
+      <div class="auto-pill">Weekly</div>
+    </div>
+  </div>
+</section>
+
+<!-- Download CTA -->
+<section id="download">
+  <div class="dl-text reveal">
+    <p class="section-eyebrow" style="justify-content:center">Ready to start?</p>
+    <h2>Download<br/><em>ClearWalls</em>.</h2>
+    <p>5.1 MB. Android 8.0+. Free to download. No sign-in required.</p>
+    <a href="ClearWalls-v1_0_5-release.apk" class="dl-badge" download>
+      <span class="dl-badge-icon">📱</span>
+      <span>
+        Download APK
+        <span class="dl-sub">v1.0.5 · Android 8.0+</span>
+      </span>
+    </a>
+    <div class="dl-meta">
+      <span>Free</span>
+      <span>5.1 MB</span>
+      <span>Android 8.0+</span>
+      <span>MIT License</span>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="foot-logo">Clear<span>Walls</span></div>
+  <div class="foot-links">
+    <a href="https://github.com/Rahul-999-alpha/WallCraft">GitHub</a>
+    <a href="https://github.com/Rahul-999-alpha/WallCraft/issues">Report Issue</a>
+    <a href="https://github.com/Rahul-999-alpha/WallCraft/discussions">Discussions</a>
+  </div>
+  <div class="foot-copy">© 2026 Parv Sihag · MIT License</div>
+</footer>
